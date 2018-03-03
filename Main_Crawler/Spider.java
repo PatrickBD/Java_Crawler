@@ -13,7 +13,7 @@ public class Spider
 	private List<String> pagesToVist = new LinkedList<String>();
 	private int wordCount = 0;
 	
-	public void search(String url, String searchWord)
+	public void search(String url, String searchWord, String coreUrl)
 	{
 		while(this.pagesVisited.size() < MAX_PAGES_TO_SEARCH)
 		{
@@ -33,13 +33,14 @@ public class Spider
 			boolean success = leg.searchForWord(searchWord);
 			if(success)
 			{
+				System.out.println(leg.getHeader());
 				System.out.println(String.format("**Success** Word %s found at %s", searchWord, currentUrl));
 				System.out.println(String.format("**Success** Words on found page = %s", leg.countWords(searchWord)));
 				System.out.println(String.format("**Success** Words on pages before this one = %s", this.wordCount));
 				break;
 			}
 			this.wordCount += leg.countWords(searchWord);
-			this.pagesToVist.addAll(leg.getLinks());
+			this.pagesToVist.addAll(leg.getLinks(coreUrl));
 		}
 		System.out.println("\n**Done** Visited " + this.pagesVisited.size() + " web page(s)");
 	}

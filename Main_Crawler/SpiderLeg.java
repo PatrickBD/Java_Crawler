@@ -47,6 +47,16 @@ public class SpiderLeg
             return false;
         }
     }
+    
+    public String getDoc()
+    {
+    	return this.htmlDocument.body().text();
+    }
+
+    public String getHeader()
+    {
+    	return this.htmlDocument.head().text();
+    }
 
     public boolean searchForWord(String searchWord)
     {
@@ -63,6 +73,10 @@ public class SpiderLeg
     public int countWords(String st){
     	
         int wordCount = 0;
+        if (this.htmlDocument == null)
+        {
+        	return wordCount;
+        }
         String s = this.htmlDocument.body().text();
         boolean word = false;
         int endOfLine = s.length() - 1;
@@ -86,9 +100,17 @@ public class SpiderLeg
     }
 
 
-    public List<String> getLinks()
+    public List<String> getLinks(String str)
     {
-        return this.links;
+    	List<String> newlinklist = new LinkedList<String>();
+    	for(int i = 0; i < this.links.size(); i++) {
+    		String line = this.links.get(i);
+    		if (line.contains(str))
+    		{
+    			newlinklist.add(line);
+    		}
+    	}
+        return newlinklist;
     }
 
 }
